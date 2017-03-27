@@ -5,7 +5,7 @@ import dispatch.DispatchWorker;
 /**
  * Created by john on 2017/3/21.
  */
-public class DispatchWorkerImpl implements DispatchWorker {
+public class DefaultDispatchWorker implements DispatchWorker {
 
 	public void start() {
 
