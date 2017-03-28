@@ -1,7 +1,7 @@
-package dispatch.impl;
+package berry.dispatch.impl;
 
-import dispatch.RpcMasterService;
-import dispatch.handler.HeartbeatInboundHandler;
+import berry.dispatch.RpcMasterService;
+import berry.dispatch.handler.HeartbeatInboundHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;

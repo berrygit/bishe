@@ -1,7 +1,7 @@
-package dispatch.impl;
+package berry.dispatch.impl;
 
-import dispatch.DispatchMaster;
-import dispatch.RpcMasterService;
+import berry.dispatch.DispatchMaster;
+import berry.dispatch.RpcMasterService;
 
 /**
  * Created by john on 2017/3/21.

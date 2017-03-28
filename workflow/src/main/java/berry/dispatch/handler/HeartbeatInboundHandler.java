@@ -1,4 +1,4 @@
-package dispatch.handler;
+package berry.dispatch.handler;
 
 import java.util.concurrent.TimeUnit;
 

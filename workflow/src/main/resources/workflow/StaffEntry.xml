@@ -1,0 +1,26 @@
+<workflow-sequence name='StaffEntry'>
+
+	<!--个人信息核查-->
+	<step action='checkPersonalInfo' entity='berry.demo.StaffEntryAction' maxRetry='3'
+		retryIntervalMlis='1000' retryStrategy='step'></step>
+		
+	<!--签署合同-->	
+	<step action='signContract' entity='berry.demo.StaffEntryAction' maxRetry='3'
+		retryIntervalMlis='1000' retryStrategy='step'></step>		
+	
+	<!--培训-->
+	<step action='train' entity='berry.demo.StaffEntryAction' maxRetry='3'
+		retryIntervalMlis='1000' retryStrategy='index'></step>
+	
+	<!--发放固定资产-->
+	<step action='grandFixedAssets' entity='berry.demo.StaffEntryAction' maxRetry='3'
+		retryIntervalMlis='1000' retryStrategy='step'></step>
+	
+	<!--发放薪资卡-->
+	<step action='assginFinanceCard' entity='berry.demo.StaffEntryAction' maxRetry='3'
+		retryIntervalMlis='1000' retryStrategy='step'></step>
+		
+	<!--该员工有无法入职的意外原因发生，无法入职，清空相关记录，或回收相关资产-->
+	<rollback action='clearStaffInfo' entity='berry.demo.StaffEntryAction'></rollback>
+
+</workflow-sequence>

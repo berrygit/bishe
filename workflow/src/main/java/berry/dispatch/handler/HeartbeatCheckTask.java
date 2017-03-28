@@ -1,4 +1,4 @@
-package dispatch.handler;
+package berry.dispatch.handler;
 
 public class HeartbeatCheckTask implements Runnable {
 

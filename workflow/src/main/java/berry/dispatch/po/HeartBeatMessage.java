@@ -1,4 +1,4 @@
-package dispatch.po;
+package berry.dispatch.po;
 
 public class HeartBeatMessage implements ChannelMessage {
 

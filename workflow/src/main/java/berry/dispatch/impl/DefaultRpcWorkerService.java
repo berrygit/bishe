@@ -1,6 +1,6 @@
-package dispatch.impl;
+package berry.dispatch.impl;
 
-import dispatch.handler.HeartbeatOutboundHandler;
+import berry.dispatch.handler.HeartbeatOutboundHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;

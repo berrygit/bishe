@@ -1,6 +1,6 @@
-package dispatch.impl;
+package berry.dispatch.impl;
 
-import dispatch.DispatchWorker;
+import berry.dispatch.DispatchWorker;
 
 /**
  * Created by john on 2017/3/21.

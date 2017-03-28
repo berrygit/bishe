@@ -1,6 +1,6 @@
-package dispatch.handler;
+package berry.dispatch.handler;
 
-import dispatch.po.HeartBeatMessage;
+import berry.dispatch.po.HeartBeatMessage;
 import io.netty.channel.ChannelHandlerContext;
 
 public class HeartbeatRequestTask implements Runnable {
