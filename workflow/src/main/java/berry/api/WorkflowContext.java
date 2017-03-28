@@ -1,22 +1,18 @@
 package berry.api;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-import berry.dispatch.po.ChannelMessage;
+public class WorkflowContext {
 
-public class WorkflowContext implements ChannelMessage {
+	private Map<String, Object> context = new HashMap<String, Object>();
 
-	private static final long serialVersionUID = 1L;
-
-	private Map<String, Object> context = new ConcurrentHashMap<String, Object>();
-
-	public Object getInfo(String key) {
-		return context.get(key);
+	public Map<String, Object> getContext() {
+		return context;
 	}
 
-	public void setInfo(String key, Object value) {
-		context.put(key, value);
+	public void setContext(Map<String, Object> context) {
+		this.context = context;
 	}
 
 }

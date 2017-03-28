@@ -5,7 +5,6 @@ CREATE TABLE `WORKFLOW_INSTANCE` (
   `INIT_INFO` TEXT COMMENT '初始化信息',
   `STATUS` varchar(16) NOT NULL COMMENT '工作流实例当前状态',
   `TIMEOUT_MILS` bigint(16) DEFAULT NULL COMMENT '超时毫秒数',
-  `CURRENT_NODE` varchar(64) DEFAULT NULL COMMENT '当前工作流实例的执行节点', 
   `CURRENT_STEP` varchar(64) DEFAULT NULL COMMENT '当前工作流实例执行到的步骤',
   `GMT_BEGIN` varchar(64) DEFAULT NULL COMMENT '实例执行开始时间',
   `GMT_END` varchar(64) DEFAULT NULL COMMENT '实例执行结束时间',
@@ -19,7 +18,6 @@ CREATE TABLE `WORKFLOW_INSTANCE_BACKUP` (
   `INIT_INFO` TEXT COMMENT '初始化信息',
   `STATUS` varchar(16) NOT NULL COMMENT '工作流实例当前状态',
   `TIMEOUT_MILS` bigint(16) DEFAULT NULL COMMENT '超时毫秒数',
-  `CURRENT_NODE` varchar(64) DEFAULT NULL COMMENT '当前工作流实例的执行节点', 
   `CURRENT_STEP` varchar(64) DEFAULT NULL COMMENT '当前工作流实例执行到的步骤',
   `GMT_BEGIN` varchar(64) DEFAULT NULL COMMENT '实例执行开始时间',
   `GMT_END` varchar(64) DEFAULT NULL COMMENT '实例执行结束时间',
@@ -34,7 +32,7 @@ CREATE TABLE `WORKFLOW_TASK` (
 	`INPUT` TEXT character set utf8 COMMENT '输入信息',
 	`OUTPUT` TEXT character set utf8 COMMENT '输出信息',
 	`EXCEPT_MESSAGE` TEXT character set utf8 COMMENT '错误信息',
-	`CURRENT_NODE` varchar(64) DEFAULT NULL COMMENT '当前执行节点信息',
+	`NODE` varchar(64) DEFAULT NULL COMMENT '当前执行节点信息',
 	`GMT_BEGIN` varchar(64) DEFAULT NULL COMMENT '任务执行开始时间',
     `GMT_END` varchar(64) DEFAULT NULL COMMENT '任务执行结束时间',
     PRIMARY KEY (`ID`)
@@ -48,7 +46,7 @@ CREATE TABLE `WORKFLOW_TASK_BACKUP` (
 	`INPUT` TEXT character set utf8 COMMENT '输入信息',
 	`OUTPUT` TEXT character set utf8 COMMENT '输出信息',
 	`EXCEPT_MESSAGE` TEXT character set utf8 COMMENT '错误信息',
-	`CURRENT_NODE` varchar(64) DEFAULT NULL COMMENT '当前执行节点信息',
+	`NODE` varchar(64) DEFAULT NULL COMMENT '当前执行节点信息',
 	`GMT_BEGIN` varchar(64) DEFAULT NULL COMMENT '任务执行开始时间',
     `GMT_END` varchar(64) DEFAULT NULL COMMENT '任务执行结束时间',
     PRIMARY KEY (`ID`)

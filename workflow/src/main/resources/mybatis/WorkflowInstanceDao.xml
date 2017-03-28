@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="berry.db.dao.WorkflowInstanceDao">  
+
+<insert id="createInstance" parameterType="berry.db.po.WorkflowInstanceBean" >  
+    INSERT INTO WORKFLOW_INSTANCE (REQUEST_ID, WORKFLOW_NAME, INIT_INFO, STATUS, TIMEOUT_MILS, GMT_BEGIN) 
+        VALUES (#{requestId},#{workflowName},#{initInfo},#{status},#{timeoutMils}, now())
+</insert>  
+
+</mapper>  

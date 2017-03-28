@@ -1,9 +1,9 @@
 package berry.engine;
 
-import org.springframework.context.annotation.ComponentScan;
+import berry.db.po.WorkflowInstanceBean;
 
-@ComponentScan
-public class WorkflowEngine {
-	
+public interface WorkflowEngine {
+
+	void execute(WorkflowInstanceBean instance);
 
 }

@@ -12,6 +12,8 @@ import berry.engine.model.interfaces.StepTask;
 public class WorkflowInstanceModel implements Instance {
 
 	private String name;
+	
+	private long timeoutMils;
 
 	private List<StepTask> stepTaskList;
 
@@ -44,6 +46,14 @@ public class WorkflowInstanceModel implements Instance {
 	@Override
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this);
+	}
+
+	public long getTimeoutMils() {
+		return timeoutMils;
+	}
+
+	public void setTimeoutMils(long timeoutMils) {
+		this.timeoutMils = timeoutMils;
 	}
 
 }

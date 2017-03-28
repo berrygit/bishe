@@ -16,7 +16,7 @@ import org.xml.sax.XMLReader;
 
 import berry.engine.model.interfaces.Instance;
 
-@Component
+@Component("parser")
 public class XmlWorkflowSequenceParser implements Parser, ApplicationContextAware {
 	
 	private XMLReader reader;

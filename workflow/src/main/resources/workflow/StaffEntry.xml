@@ -1,4 +1,4 @@
-<workflow-sequence name='StaffEntry'>
+<workflow-sequence name='StaffEntry' timeoutMils="60000">
 
 	<!--个人信息核查-->
 	<step action='checkPersonalInfo' entity='berry.demo.StaffEntryAction' maxRetry='3'

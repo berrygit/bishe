@@ -4,4 +4,5 @@ public interface Instance {
 
 	String getName();
 
+	long getTimeoutMils();
 }

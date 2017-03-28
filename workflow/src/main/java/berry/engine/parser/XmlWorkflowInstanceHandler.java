@@ -43,6 +43,7 @@ public class XmlWorkflowInstanceHandler extends DefaultHandler {
 			instance = new WorkflowInstanceModel(stepTaskList);
 
 			instance.setName(attributes.getValue("name"));
+			instance.setTimeoutMils(Long.valueOf(attributes.getValue("timeoutMils")));
 
 		} else if ("step".equals(currentTag)) {
 			task = new StepTaskModel();
