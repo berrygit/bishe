@@ -4,7 +4,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import berry.api.WorkflowService;
-import berry.db.po.WorkflowInstanceBean;
 import berry.engine.model.StepTaskModel;
 
 public class ProjectBootstrap {
