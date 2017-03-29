@@ -1,9 +1,17 @@
 package berry.engine;
 
+import java.util.Date;
+
+import berry.common.exception.TimeoutException;
+
 public class TimeoutChecker {
 
-	public boolean check(long timeoutMils, long beginTime) {
-		return true;
+	public static void check(long timeoutMils, Date gmtBegin) throws TimeoutException {
+
+		if ((gmtBegin.getTime() + timeoutMils) < System.currentTimeMillis()) {
+			throw new TimeoutException();
+		}
+
 	}
 
 }

@@ -5,9 +5,10 @@ import berry.common.exception.RetryMaxException;
 import berry.db.po.WorkflowInstanceBean;
 import berry.engine.invoke.SteptaskInvokeStrategy;
 import berry.engine.model.interfaces.StepTask;
+import berry.engine.retry.interfaces.AbstractRetryStrategy;
 import berry.engine.retry.interfaces.RetryStrategy;
 
-public class IndexRetryStrategy implements RetryStrategy {
+public class IndexRetryStrategy extends AbstractRetryStrategy implements RetryStrategy {
 
 	private long currentRetry = 0;
 
@@ -19,12 +20,8 @@ public class IndexRetryStrategy implements RetryStrategy {
 			Thread.sleep((long) (Math.pow(2, currentRetry) * stepTask.getRetryIntervalMlis()));
 
 			currentRetry++;
-
-			try {
-				return steptaskInvokeStrategy.invoke(instance, stepTask, context);
-			} catch (Throwable e) {
-				return retry(steptaskInvokeStrategy, instance, stepTask, context);
-			}
+			
+			this.invoke(steptaskInvokeStrategy, instance, stepTask, context);
 		}
 
 		throw new RetryMaxException();

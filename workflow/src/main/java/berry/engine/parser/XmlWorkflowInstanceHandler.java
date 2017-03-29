@@ -65,7 +65,7 @@ public class XmlWorkflowInstanceHandler extends DefaultHandler {
 				e.printStackTrace();
 				throw new IllegalStateException(e);
 			}
-
+			
 			task.setMaxRetry(Integer.valueOf(attributes.getValue("maxRetry")));
 			task.setRetryIntervalMlis(Integer.valueOf(attributes.getValue("retryIntervalMlis")));
 			task.setRetryStrategy((attributes.getValue("retryStrategy")));
@@ -73,16 +73,26 @@ public class XmlWorkflowInstanceHandler extends DefaultHandler {
 		} else if ("rollback".equals(currentTag)) {
 			rollbackTask = new RollbackTaskModel();
 			
+			String action = attributes.getValue("action");
+
+			String clazz = attributes.getValue("entity");
+
+			Map<String, ?> beans;
 			try {
-				rollbackTask.setActionAndEntity(attributes.getValue("action"), attributes.getValue("entity"));
+				beans = context.getBeansOfType(Class.forName(clazz));
+
+				if (beans != null && !beans.isEmpty()) {
+					rollbackTask.setActionAndEntity(action, beans.values().iterator().next());
+				} else {
+					rollbackTask.setActionAndEntity(action, Class.forName(clazz).newInstance());
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new IllegalStateException(e);
 			}
-
 		}
 	}
-
+	
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		if ("step".equals(currentTag)) {

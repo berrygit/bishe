@@ -6,7 +6,6 @@ public enum WorkflowInstanceState {
 	RUNNING, // 运行中
 	FINISH, // 完成
 	FAILED, // 失败
-	TIMEOUT, // 超时
-	TERMINATED // 异常终止
-
+	TIMEOUT // 超时
+	
 }
