@@ -6,6 +6,6 @@ import berry.api.WorkflowContext;
 
 public interface Task {
 
-	Map<String, Object> invoke(WorkflowContext context) throws Throwable;
+	Map<String, Object> invoke(WorkflowContext context) throws Exception;
 
 }

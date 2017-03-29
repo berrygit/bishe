@@ -81,7 +81,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		instance.setRequestId(requestId);
 		instance.setWorkflowName(workflowName);
 
-		WorkflowInstanceBean instanceBean = workflowInstanceDao.getStatus(instance);
+		WorkflowInstanceBean instanceBean = workflowInstanceDao.getInstance(instance);
 
 		return instanceBean.getGmtBegin().toString();
 	}

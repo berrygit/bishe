@@ -2,7 +2,7 @@
 
 	<!--个人信息核查-->
 	<step action='checkPersonalInfo' entity='berry.demo.StaffEntryAction' maxRetry='3'
-		retryIntervalMlis='1000' retryStrategy='step'></step>
+		retryIntervalMlis='1000' retryStrategy='const'></step>
 	
 	<!--签署合同-->	
 	<step action='signContract' entity='berry.demo.StaffEntryAction' maxRetry='3'

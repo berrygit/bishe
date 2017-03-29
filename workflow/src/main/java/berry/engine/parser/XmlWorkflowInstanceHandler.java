@@ -72,9 +72,14 @@ public class XmlWorkflowInstanceHandler extends DefaultHandler {
 
 		} else if ("rollback".equals(currentTag)) {
 			rollbackTask = new RollbackTaskModel();
+			
+			try {
+				rollbackTask.setActionAndEntity(attributes.getValue("action"), attributes.getValue("entity"));
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new IllegalStateException(e);
+			}
 
-			rollbackTask.setAction(attributes.getValue("action"));
-			rollbackTask.setEntity(attributes.getValue("entity"));
 		}
 	}
 

@@ -7,4 +7,6 @@ public interface StepTask extends Task {
 	long getMaxRetry();
 
 	long getRetryIntervalMlis();
+	
+	String getRetryStrategy();
 }

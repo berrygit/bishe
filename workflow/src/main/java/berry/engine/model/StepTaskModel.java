@@ -25,7 +25,7 @@ public class StepTaskModel implements StepTask {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Map<String, Object> invoke(WorkflowContext context) throws Throwable {
+	public Map<String, Object> invoke(WorkflowContext context) throws Exception {
 
 		Map<String, Object> result = null;
 
@@ -35,7 +35,7 @@ public class StepTaskModel implements StepTask {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException t) {
-			throw t.getTargetException();
+			throw (Exception)t.getTargetException();
 		}
 
 		return result;

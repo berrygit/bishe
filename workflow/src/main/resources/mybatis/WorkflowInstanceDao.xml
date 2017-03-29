@@ -7,25 +7,17 @@
 	<result column="gmt_begin" property="gmtBegin"></result>
 </resultMap>
 
-<insert id="createInstance" parameterType="berry.db.po.WorkflowInstanceBean" >  
-    INSERT INTO WORKFLOW_INSTANCE (REQUEST_ID, WORKFLOW_NAME, INIT_INFO, STATUS, TIMEOUT_MILS, GMT_BEGIN) 
-        VALUES (#{requestId},#{workflowName},#{initInfo},#{status},#{timeoutMils}, now())
+<insert id="createInstance" useGeneratedKeys="true" keyProperty="id" parameterType="berry.db.po.WorkflowInstanceBean" >  
+    INSERT INTO WORKFLOW_INSTANCE (REQUEST_ID, WORKFLOW_NAME, INIT_INFO, STATUS, TIMEOUT_MILS, GMT_BEGIN, GMT_UPDATE) 
+        VALUES (#{requestId}, #{workflowName}, #{initInfo}, #{status}, #{timeoutMils}, now(), now())
 </insert>
 
-<select id="getStatus" parameterType="berry.db.po.WorkflowInstanceBean" resultMap="instanceMap">  
+<select id="getInstance" parameterType="berry.db.po.WorkflowInstanceBean" resultMap="instanceMap">  
     SELECT * FROM WORKFLOW_INSTANCE WHERE REQUEST_ID=#{requestId} AND WORKFLOW_NAME=#{workflowName}
 </select>
 
 <update id="updateStatus" parameterType="berry.db.po.WorkflowInstanceBean">  
-    UPDATE WORKFLOW_INSTANCE SET STATUS=#{status} WHERE REQUEST_ID=#{requestId} AND WORKFLOW_NAME=#{workflowName}
-</update>
-
-<update id="updateEndTime" parameterType="berry.db.po.WorkflowInstanceBean">  
-    UPDATE WORKFLOW_INSTANCE SET GMT_END=#{gmtEnd} WHERE REQUEST_ID=#{requestId} AND WORKFLOW_NAME=#{workflowName}
-</update>
-
-<update id="updateCurrentStep" parameterType="berry.db.po.WorkflowInstanceBean">  
-    UPDATE WORKFLOW_INSTANCE SET CURRENT_STEP=#{currentStep} WHERE REQUEST_ID=#{requestId} AND WORKFLOW_NAME=#{workflowName}
+    UPDATE WORKFLOW_INSTANCE SET STATUS=#{status}, GMT_UPDATE = now() WHERE REQUEST_ID=#{requestId} AND WORKFLOW_NAME=#{workflowName}
 </update>
 
 </mapper>  

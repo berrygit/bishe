@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="berry.db.dao.WorkflowTaskDao">
+
+<insert id="createTask" useGeneratedKeys="true" keyProperty="id" parameterType="berry.db.po.WorkflowTaskBean" >  
+    INSERT INTO WORKFLOW_TASK (WORKFLOW_ID, TASK_NAME, STATUS, INPUT, NODE, GMT_BEGIN, GMT_UPDATE) 
+        VALUES (#{workflowId},#{taskName},'RUNNING' ,#{input},#{node}, now(), now())
+</insert>
+
+<update id="finishTask" parameterType="berry.db.po.WorkflowTaskBean">  
+    UPDATE WORKFLOW_TASK SET STATUS='FINISH', OUTPUT=#{output}, GMT_UPDATE = now() WHERE ID=#{id}
+</update>
+
+<update id="recordFailedInfo" parameterType="berry.db.po.WorkflowTaskBean">  
+    UPDATE WORKFLOW_TASK SET STATUS='FAILED', EXCEPT_MESSAGE=#{excetionMessage}, GMT_UPDATE = now() WHERE ID=#{id}
+</update>
+
+</mapper>
