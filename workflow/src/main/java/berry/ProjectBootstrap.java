@@ -18,7 +18,7 @@ public class ProjectBootstrap {
 
 		model.setMaxRetry(100);
 		
-		service.executeWorkflow("12345", "StaffEntry", null);
+		service.queryResult("12345", "StaffEntry");
 
 		// System.out.println(Date);
 		//
