@@ -3,21 +3,21 @@ package berry.db.po;
 import java.util.Date;
 
 public class WorkflowInstanceBean {
-	
+
 	private String requestId;
-	
+
 	private String workflowName;
-	
+
 	private String initInfo;
-	
+
 	private String status;
-	
+
 	private long timeoutMils;
-	
+
 	private String currentStep;
-	
-	private Date gmtBegion;
-	
+
+	private Date gmtBegin;
+
 	private Date gmtEnd;
 
 	public String getRequestId() {
@@ -68,12 +68,12 @@ public class WorkflowInstanceBean {
 		this.currentStep = currentStep;
 	}
 
-	public Date getGmtBegion() {
-		return gmtBegion;
+	public Date getGmtBegin() {
+		return gmtBegin;
 	}
 
-	public void setGmtBegion(Date gmtBegion) {
-		this.gmtBegion = gmtBegion;
+	public void setGmtBegin(Date gmtBegin) {
+		this.gmtBegin = gmtBegin;
 	}
 
 	public Date getGmtEnd() {

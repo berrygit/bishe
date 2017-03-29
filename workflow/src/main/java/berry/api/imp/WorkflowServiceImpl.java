@@ -1,5 +1,7 @@
 package berry.api.imp;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -23,12 +25,26 @@ public class WorkflowServiceImpl implements WorkflowService {
 
 	@Resource
 	private WorkflowMetaInfo workflowMetaInfo;
-	
+
 	@Resource
 	private WorkflowEngine workflowEngine;
 
 	@Override
 	public void executeWorkflow(String requestId, String workflowName, Object request) {
+
+		WorkflowInstanceBean instance = storeWorkflowInstance(requestId, workflowName, request);
+
+		workflowEngine.execute(instance);
+
+	}
+
+	@Override
+	public void scheduleWorkflow(String requestId, String workflowName, Object request) {
+
+		storeWorkflowInstance(requestId, workflowName, request);
+	}
+
+	private WorkflowInstanceBean storeWorkflowInstance(String requestId, String workflowName, Object request) {
 
 		WorkflowInstanceBean instance = new WorkflowInstanceBean();
 
@@ -50,15 +66,24 @@ public class WorkflowServiceImpl implements WorkflowService {
 			instance.setTimeoutMils(Constant.DEFAULT_TIMEOUT_MILS);
 		}
 
+		instance.setGmtBegin(new Date());
+
 		workflowInstanceDao.createInstance(instance);
-		
-		workflowEngine.execute(instance);
-		
+
+		return instance;
 	}
 
 	@Override
 	public String queryResult(String requestId, String workflowName) {
-		return null;
+
+		WorkflowInstanceBean instance = new WorkflowInstanceBean();
+
+		instance.setRequestId(requestId);
+		instance.setWorkflowName(workflowName);
+
+		WorkflowInstanceBean instanceBean = workflowInstanceDao.getStatus(instance);
+
+		return instanceBean.getGmtBegin().toString();
 	}
 
 }

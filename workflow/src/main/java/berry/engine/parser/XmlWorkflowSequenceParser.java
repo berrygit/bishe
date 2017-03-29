@@ -18,7 +18,7 @@ import berry.engine.model.interfaces.Instance;
 
 @Component("parser")
 public class XmlWorkflowSequenceParser implements Parser, ApplicationContextAware {
-	
+
 	private XMLReader reader;
 
 	private XmlWorkflowInstanceHandler handler;
@@ -66,9 +66,9 @@ public class XmlWorkflowSequenceParser implements Parser, ApplicationContextAwar
 
 		if (fileList != null) {
 			for (String file : fileList) {
-				
+
 				String fileName = path + "/" + file;
-				
+
 				// 读取xml文档
 				reader.parse(fileName);
 

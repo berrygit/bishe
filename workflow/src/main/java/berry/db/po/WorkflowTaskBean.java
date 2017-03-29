@@ -3,23 +3,23 @@ package berry.db.po;
 import java.util.Date;
 
 public class WorkflowTaskBean {
-	
+
 	private String workflowId;
-	
+
 	private String taskName;
-	
+
 	private String status;
-	
+
 	private String input;
-	
+
 	private String output;
-	
+
 	private String excetionMessage;
-	
+
 	private String node;
-	
+
 	private Date gmtBegion;
-	
+
 	private Date gmtEnd;
 
 	public String getWorkflowId() {
@@ -93,5 +93,5 @@ public class WorkflowTaskBean {
 	public void setGmtEnd(Date gmtEnd) {
 		this.gmtEnd = gmtEnd;
 	}
-	
+
 }

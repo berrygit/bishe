@@ -8,11 +8,10 @@ import berry.engine.model.interfaces.Instance;
 import berry.engine.model.interfaces.RollbackTask;
 import berry.engine.model.interfaces.StepTask;
 
-
 public class WorkflowInstanceModel implements Instance {
 
 	private String name;
-	
+
 	private long timeoutMils;
 
 	private List<StepTask> stepTaskList;

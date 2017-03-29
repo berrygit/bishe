@@ -15,9 +15,9 @@ public class StepTaskModel implements StepTask {
 
 	private Object entity;
 
-	private int maxRetry;
+	private long maxRetry;
 
-	private int retryIntervalMlis;
+	private long retryIntervalMlis;
 
 	private String retryStrategy;
 
@@ -57,19 +57,19 @@ public class StepTaskModel implements StepTask {
 		return entity;
 	}
 
-	public int getMaxRetry() {
+	public long getMaxRetry() {
 		return maxRetry;
 	}
 
-	public void setMaxRetry(int maxRetry) {
+	public void setMaxRetry(long maxRetry) {
 		this.maxRetry = maxRetry;
 	}
 
-	public int getRetryIntervalMlis() {
+	public long getRetryIntervalMlis() {
 		return retryIntervalMlis;
 	}
 
-	public void setRetryIntervalMlis(int retryIntervalMlis) {
+	public void setRetryIntervalMlis(long retryIntervalMlis) {
 		this.retryIntervalMlis = retryIntervalMlis;
 	}
 
