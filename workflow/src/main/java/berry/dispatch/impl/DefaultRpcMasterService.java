@@ -1,7 +1,7 @@
 package berry.dispatch.impl;
 
 import berry.dispatch.RpcMasterService;
-import berry.dispatch.handler.HeartbeatInboundHandler;
+import berry.dispatch.handler.HeartbeatRecieveHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -29,7 +29,7 @@ public class DefaultRpcMasterService implements RpcMasterService {
 		// 幂等
 		this.stop();
 
-		this.bossGroup = new NioEventLoopGroup(1);
+		this.bossGroup = new NioEventLoopGroup();
 		this.workerGroup = new NioEventLoopGroup();
 
 		ServerBootstrap bootstrap = new ServerBootstrap();
@@ -41,7 +41,8 @@ public class DefaultRpcMasterService implements RpcMasterService {
 						ch.pipeline()
 								.addLast(new ObjectDecoder(
 										ClassResolvers.softCachingConcurrentResolver(this.getClass().getClassLoader())))
-								.addLast(new ObjectEncoder()).addLast(new HeartbeatInboundHandler(15));
+								.addLast(new ObjectEncoder())
+								.addLast(new HeartbeatRecieveHandler(15));
 					}
 				}).option(ChannelOption.SO_BACKLOG, 128).childOption(ChannelOption.SO_KEEPALIVE, true);
 
@@ -60,5 +61,4 @@ public class DefaultRpcMasterService implements RpcMasterService {
 			workerGroup.shutdownGracefully().sync();
 		}
 	}
-
 }

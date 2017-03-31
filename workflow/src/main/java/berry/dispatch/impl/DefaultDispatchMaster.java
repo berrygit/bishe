@@ -10,23 +10,27 @@ public class DefaultDispatchMaster implements DispatchMaster {
 
 	private RpcMasterService rpcMasterService;
 
-	DefaultDispatchMaster(int port) {
+	public DefaultDispatchMaster(int port) {
 		rpcMasterService = new DefaultRpcMasterService(port);
 	}
 
-	public void start() {
+	public void start(){
 		try {
 			rpcMasterService.start();
-		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
 	public void stop() {
 		try {
 			rpcMasterService.stop();
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

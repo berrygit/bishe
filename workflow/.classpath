@@ -27,5 +27,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/berry/Desktop/grandcanal-core-2.0.0-1613.1.jar" sourcepath="C:/Users/berry/Desktop/grandcanal-core-2.0.0-1613.1-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/berry/Desktop/grandcanal-schedule-2.0.0-1613.1.jar" sourcepath="C:/Users/berry/Desktop/grandcanal-schedule-2.0.0-1613.1-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

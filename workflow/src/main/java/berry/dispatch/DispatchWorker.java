@@ -8,4 +8,6 @@ public interface DispatchWorker {
 	void start();
 
 	void stop();
+
+	void changeLeader(String leader);
 }
