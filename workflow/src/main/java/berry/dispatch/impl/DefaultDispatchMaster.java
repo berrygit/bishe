@@ -2,37 +2,60 @@ package berry.dispatch.impl;
 
 import berry.dispatch.DispatchMaster;
 import berry.dispatch.RpcMasterService;
+import berry.dispatch.TaskDispatcher;
 
-/**
- * Created by john on 2017/3/21.
- */
 public class DefaultDispatchMaster implements DispatchMaster {
-
+	
+	private boolean running = false;
+	
 	private RpcMasterService rpcMasterService;
+	
+	private TaskDispatcher taskDispatcher;
 
-	public DefaultDispatchMaster(int port) {
-		rpcMasterService = new DefaultRpcMasterService(port);
-	}
-
-	public void start(){
-		try {
-			rpcMasterService.start();
-		} catch (Exception e) {
+	@Override
+	public synchronized void start() {
+		
+		if (running){
+			return;
+		}
+		
+		boolean started = false;
+		
+		while (true){
+			
+			try{
+				rpcMasterService.start();
+				started = true;
+			}catch (Exception e) {
+			}
+			
+			if (started) {
+				break;
+			}
+			
 			try {
 				Thread.sleep(100);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (InterruptedException e) {
 			}
 		}
+		
+		taskDispatcher.start();
+		
 	}
 
-	public void stop() {
+	@Override
+	public synchronized void stop() {
+		
+		if (!running) {
+			return;
+		}
+		
+		taskDispatcher.stop();
 		try {
 			rpcMasterService.stop();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
 }
