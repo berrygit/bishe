@@ -8,4 +8,20 @@ public class RpcCallMessage implements ChannelMessage{
 	
 	private String workflowID;
 
+	public String getMessageId() {
+		return messageId;
+	}
+
+	public void setMessageId(String messageId) {
+		this.messageId = messageId;
+	}
+
+	public String getWorkflowID() {
+		return workflowID;
+	}
+
+	public void setWorkflowID(String workflowID) {
+		this.workflowID = workflowID;
+	}
+
 }

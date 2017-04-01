@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 
 import berry.dispatch.RpcMasterService;
 import berry.dispatch.handler.HeartbeatRecieveHandler;
+import berry.dispatch.handler.MasterDefaultHandler;
+import berry.dispatch.handler.RpcResponseHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -46,7 +48,10 @@ public class DefaultRpcMasterService implements RpcMasterService {
 								.addLast(new ObjectDecoder(
 										ClassResolvers.softCachingConcurrentResolver(this.getClass().getClassLoader())))
 								.addLast(new ObjectEncoder())
-								.addLast(new HeartbeatRecieveHandler(10));
+								.addLast(new HeartbeatRecieveHandler(10))
+								.addLast(new RpcResponseHandler())
+								.addLast(new MasterDefaultHandler());
+								
 					}
 				}).option(ChannelOption.SO_BACKLOG, 128).childOption(ChannelOption.SO_KEEPALIVE, true);
 

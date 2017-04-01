@@ -70,7 +70,6 @@ public class HeartbeatRecieveHandler extends SimpleChannelInboundHandler<HeartBe
 		ctx.fireUserEventTriggered(new LostHeartbeatEvent());
 		
 		this.heartbeatSchedule.cancel(false);
-		
 	}
 
 }
