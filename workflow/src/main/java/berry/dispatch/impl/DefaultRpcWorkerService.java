@@ -43,7 +43,7 @@ public class DefaultRpcWorkerService implements RpcWorkerService{
 								.addLast(new ObjectDecoder(
 										ClassResolvers.weakCachingResolver(this.getClass().getClassLoader())))
 								.addLast(new ObjectEncoder())
-								.addLast(new HeartbeatSendHandler(5));
+								.addLast(new HeartbeatSendHandler(1));
 					}
 				});
 

@@ -8,6 +8,7 @@
 	<result column="REQUEST_ID" property="requestId"></result>
 	<result column="WORKFLOW_NAME" property="workflowName"></result>
 	<result column="INIT_INFO" property="initInfo"></result>
+	<result column="NODE" property="node"></result>
 	<result column="STATUS" property="status"></result>
 	<result column="TIMEOUT_MILS" property="timeoutMils"></result>
 	<result column="GMT_BEGIN" property="gmtBegin"></result>

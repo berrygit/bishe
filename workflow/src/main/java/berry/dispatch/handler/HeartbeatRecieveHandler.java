@@ -14,7 +14,7 @@ import io.netty.util.concurrent.ScheduledFuture;
 
 public class HeartbeatRecieveHandler extends SimpleChannelInboundHandler<HeartBeatMessage> {
 
-	private static final long MIN_TIMEOUT_MILS = 1;
+	private static final long MIN_TIMEOUT_MILS = 10;
 
 	ScheduledFuture<?> heartbeatSchedule;
 

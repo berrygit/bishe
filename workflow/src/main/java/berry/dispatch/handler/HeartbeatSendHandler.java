@@ -9,7 +9,7 @@ import io.netty.util.concurrent.ScheduledFuture;
 
 public class HeartbeatSendHandler extends ChannelOutboundHandlerAdapter {
 
-	private final long MIN_HEARTBEAT_REQUEST_PERIOD_SECOND = 3;
+	private final long MIN_HEARTBEAT_REQUEST_PERIOD_SECOND = 1;
 
 	private final long heartbeatPeriodSecond;
 	

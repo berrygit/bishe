@@ -1,21 +1,21 @@
 package berry.dispatch.leader;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
 import berry.dispatch.DispatchMaster;
 import berry.dispatch.DispatchWorker;
-import berry.dispatch.impl.DefaultDispatchMaster;
-import berry.dispatch.impl.DefaultDispatchWorker;
 
+@Component
 public class DefaultRelationshipProcessor implements RelationshipProcessor {
 
+	@Resource
 	private DispatchMaster master;
 
+	@Resource
 	private DispatchWorker worker;
 	
-	public DefaultRelationshipProcessor(int port) {
-		this.master = new DefaultDispatchMaster(port);
-		this.worker = new DefaultDispatchWorker();
-	}
-
 	@Override
 	public void beLeader() {
 		master.start();

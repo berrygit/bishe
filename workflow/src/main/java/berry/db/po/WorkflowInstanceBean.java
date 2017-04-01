@@ -13,6 +13,8 @@ public class WorkflowInstanceBean {
 	private String initInfo;
 
 	private String status;
+	
+	private String node;
 
 	private long timeoutMils;
 
@@ -82,6 +84,14 @@ public class WorkflowInstanceBean {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getNode() {
+		return node;
+	}
+
+	public void setNode(String node) {
+		this.node = node;
 	}
 	
 }

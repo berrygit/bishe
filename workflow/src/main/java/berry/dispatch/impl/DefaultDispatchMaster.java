@@ -1,17 +1,24 @@
 package berry.dispatch.impl;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
 import berry.dispatch.DispatchMaster;
 import berry.dispatch.RpcMasterService;
 import berry.dispatch.TaskDispatcher;
 
+@Component
 public class DefaultDispatchMaster implements DispatchMaster {
 	
 	private boolean running = false;
 	
+	@Resource
 	private RpcMasterService rpcMasterService;
 	
+	@Resource
 	private TaskDispatcher taskDispatcher;
-
+	
 	@Override
 	public synchronized void start() {
 		

@@ -14,6 +14,7 @@ import berry.common.Constant;
 import berry.common.enums.WorkflowInstanceState;
 import berry.db.dao.WorkflowInstanceDao;
 import berry.db.po.WorkflowInstanceBean;
+import berry.dispatch.common.LocalAddress;
 import berry.engine.WorkflowEngine;
 import berry.engine.WorkflowMetaInfo;
 
@@ -32,7 +33,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 	@Override
 	public void executeWorkflow(String requestId, String workflowName, Object request) {
 
-		WorkflowInstanceBean instance = storeWorkflowInstance(requestId, workflowName, request);
+		WorkflowInstanceBean instance = storeWorkflowInstanceForExecute(requestId, workflowName, request);
 
 		workflowEngine.execute(instance);
 
@@ -41,12 +42,28 @@ public class WorkflowServiceImpl implements WorkflowService {
 	@Override
 	public void scheduleWorkflow(String requestId, String workflowName, Object request) {
 
-		storeWorkflowInstance(requestId, workflowName, request);
+		storeWorkflowInstanceForDispatch(requestId, workflowName, request);
+
 	}
 
-	private WorkflowInstanceBean storeWorkflowInstance(String requestId, String workflowName, Object request) {
+	private void storeWorkflowInstanceForDispatch(String requestId, String workflowName, Object request) {
+		
+		WorkflowInstanceBean instance = new WorkflowInstanceBean();
+		instance.setNode(LocalAddress.getIp());
+
+		storeWorkflowInstance(instance, requestId, workflowName, request);
+
+	}
+
+	private WorkflowInstanceBean storeWorkflowInstanceForExecute(String requestId, String workflowName,
+			Object request) {
 
 		WorkflowInstanceBean instance = new WorkflowInstanceBean();
+		return storeWorkflowInstance(instance, requestId, workflowName, request);
+	}
+
+	private WorkflowInstanceBean storeWorkflowInstance(WorkflowInstanceBean instance, String requestId,
+			String workflowName, Object request) {
 
 		instance.setRequestId(requestId);
 		instance.setWorkflowName(workflowName);

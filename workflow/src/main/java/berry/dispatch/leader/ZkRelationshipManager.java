@@ -2,28 +2,45 @@ package berry.dispatch.leader;
 
 import java.net.InetAddress;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ZkRelationshipManager implements RelationshipManager{
 	
 	private static final String LATCH_PATH = "/latch_leader";
 	
-	private final LeaderLatch leaderLatch;
+	private LeaderLatch leaderLatch;
 	
-	private final CuratorFramework curatorFramework;
+	private CuratorFramework curatorFramework;
 	
-	private final PathChildrenCache pathChildrenCache;
+	private PathChildrenCache pathChildrenCache;
 	
-	public ZkRelationshipManager(String host, String path, int port) throws Exception{
+	@Resource
+	private NodeStateObserver nodeStateObserver;
+	
+	@Value("${workflow.zk.host}")
+	private String zkHost;
+	
+	@Value("${workflow.zk.path}")
+	private String zkPath;
+	
+	@PostConstruct
+	public void init() throws Exception{
 		
 		this.curatorFramework = CuratorFrameworkFactory.builder().
-                connectString(host).namespace(path).build();
+                connectString(zkHost).namespace(zkPath).build();
 		this.leaderLatch = new LeaderLatch(curatorFramework, LATCH_PATH, InetAddress.getLocalHost().getHostAddress());
-		this.pathChildrenCache = new PathChildrenCache(curatorFramework, host, false);
-		pathChildrenCache.getListenable().addListener(new NodeStateObserver(leaderLatch, port));
+		this.pathChildrenCache = new PathChildrenCache(curatorFramework, zkPath, false);
+		this.nodeStateObserver.setLeaderLatch(leaderLatch);
+		this.pathChildrenCache.getListenable().addListener(nodeStateObserver);
 	}
 	
 	@Override

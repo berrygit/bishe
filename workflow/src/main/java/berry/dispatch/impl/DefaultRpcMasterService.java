@@ -1,5 +1,8 @@
 package berry.dispatch.impl;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import berry.dispatch.RpcMasterService;
 import berry.dispatch.handler.HeartbeatRecieveHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -13,15 +16,16 @@ import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 
+@Component
 public class DefaultRpcMasterService implements RpcMasterService {
 
-	private final int port;
+	
+	@Value("${workflow.engine.port}")
+	private int port;
+	
 	private EventLoopGroup bossGroup;
+	
 	private EventLoopGroup workerGroup;
-
-	public DefaultRpcMasterService(int port) {
-		this.port = port;
-	}
 
 	@Override
 	public void start() throws InterruptedException {
@@ -42,7 +46,7 @@ public class DefaultRpcMasterService implements RpcMasterService {
 								.addLast(new ObjectDecoder(
 										ClassResolvers.softCachingConcurrentResolver(this.getClass().getClassLoader())))
 								.addLast(new ObjectEncoder())
-								.addLast(new HeartbeatRecieveHandler(15));
+								.addLast(new HeartbeatRecieveHandler(10));
 					}
 				}).option(ChannelOption.SO_BACKLOG, 128).childOption(ChannelOption.SO_KEEPALIVE, true);
 
