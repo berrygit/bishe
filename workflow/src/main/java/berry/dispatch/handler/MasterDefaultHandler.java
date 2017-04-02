@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import berry.dispatch.FailOverManager;
 import berry.dispatch.WorkerManager;
 import berry.dispatch.heartbeat.FindHeartbeatEvent;
 import berry.dispatch.heartbeat.LostHeartbeatEvent;
@@ -15,11 +16,14 @@ import io.netty.util.AttributeKey;
 @Component
 public class MasterDefaultHandler extends ChannelInboundHandlerAdapter {
 	
-	private final AttributeKey<String> SLAVE_ID = AttributeKey.valueOf("MasterDefaultHandler");
+	private final AttributeKey<String> SLAVE_ID = AttributeKey.valueOf("MasterDefaultHandler" + this);
 	
 	@Resource
     private WorkerManager workerManager;
-
+	
+	@Resource
+	private FailOverManager failOverManager;
+	
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
     	
@@ -35,6 +39,7 @@ public class MasterDefaultHandler extends ChannelInboundHandlerAdapter {
         if (msg instanceof LostHeartbeatEvent) {
         	workerManager.removeWorker(slaveId.get());
             ctx.channel().close();
+            failOverManager.failOver(slaveId.get());
         } else if (msg instanceof FindHeartbeatEvent) {
             String nodeId = ((FindHeartbeatEvent) msg).getNodeId();
             slaveId.set(nodeId);

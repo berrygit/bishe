@@ -1,5 +1,7 @@
 package berry.db.dao;
 
+import java.util.List;
+
 import berry.db.po.WorkflowInstanceBean;
 
 public interface WorkflowInstanceDao {
@@ -11,5 +13,13 @@ public interface WorkflowInstanceDao {
 	WorkflowInstanceBean getInstanceByRequestIdAndWorkflowName(WorkflowInstanceBean instance);
 
 	void updateStatus(WorkflowInstanceBean instance);
+
+	List<WorkflowInstanceBean> getScheduleInstance();
+
+	List<WorkflowInstanceBean> getBeScheduleInstance();
+
+	List<WorkflowInstanceBean> getRunningInstanceByNode(String worker);
+	
+	void updateStatusAndNodeInfoById(WorkflowInstanceBean instance);
 
 }

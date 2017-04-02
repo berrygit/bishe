@@ -13,4 +13,6 @@ public interface WorkerManager {
 
 	void clear();
 
+	int getWorkerCount();
+
 }

@@ -55,4 +55,9 @@ public class DefaultWorkerManager implements WorkerManager{
 		workerMap.clear();
 	}
 
+	@Override
+	public int getWorkerCount() {
+		return workerMap.size();
+	}
+
 }
