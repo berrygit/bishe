@@ -4,8 +4,10 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import berry.db.dao.MasterInfoDao;
 import berry.dispatch.DispatchMaster;
 import berry.dispatch.DispatchWorker;
+import berry.dispatch.common.LocalAddress;
 
 @Component
 public class DefaultRelationshipProcessor implements RelationshipProcessor {
@@ -16,8 +18,12 @@ public class DefaultRelationshipProcessor implements RelationshipProcessor {
 	@Resource
 	private DispatchWorker worker;
 	
+	@Resource
+	private MasterInfoDao masterInfoDao;
+	
 	@Override
 	public void beLeader() {
+		masterInfoDao.update(LocalAddress.getIp());
 		master.start();
 	}
 
@@ -30,16 +36,10 @@ public class DefaultRelationshipProcessor implements RelationshipProcessor {
 	public void changeLeader(String leader) {
 		worker.changeLeader(leader);
 	}
-	
+
 	@Override
 	public void stop() {
-		master.stop();
 		worker.stop();
 	}
 	
-	@Override
-	public void start(){
-		worker.start();
-	}
-
 }

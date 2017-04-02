@@ -7,9 +7,7 @@ public interface RelationshipProcessor {
 	void lostLeader();
 	
 	void changeLeader(String leader);
-	
+
 	void stop();
 	
-	void start();
-
 }

@@ -3,6 +3,7 @@ package berry.dispatch.impl;
 import berry.common.exception.ConnectionException;
 import berry.dispatch.RpcWorkerService;
 import berry.dispatch.handler.HeartbeatSendHandler;
+import berry.dispatch.handler.RpcRequestHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -43,7 +44,8 @@ public class DefaultRpcWorkerService implements RpcWorkerService{
 								.addLast(new ObjectDecoder(
 										ClassResolvers.weakCachingResolver(this.getClass().getClassLoader())))
 								.addLast(new ObjectEncoder())
-								.addLast(new HeartbeatSendHandler(1));
+								.addLast(new HeartbeatSendHandler(1))
+								.addLast(new RpcRequestHandler());
 					}
 				});
 
@@ -58,6 +60,7 @@ public class DefaultRpcWorkerService implements RpcWorkerService{
 		}
 	};
 
+	@Override
 	public void start(String host, int port) throws Exception {
 
 		this.host = host;
@@ -77,6 +80,7 @@ public class DefaultRpcWorkerService implements RpcWorkerService{
 		throw new ConnectionException();
 	}
 
+	@Override
 	public void stop() throws InterruptedException {
 		if (workerGroup != null) {
 			workerGroup.shutdownGracefully().sync();
@@ -90,12 +94,4 @@ public class DefaultRpcWorkerService implements RpcWorkerService{
         }
 	}
 
-	public void sendMessage(Object message) throws Exception {
-
-		if (channel != null && channel.isWritable()) {
-			channel.writeAndFlush(message).sync();
-		} else {
-			throw new Exception("channel is not avaliable");
-		}
-	}
 }

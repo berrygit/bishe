@@ -23,7 +23,6 @@ public class ZkRelationshipManager implements RelationshipManager{
 	
 	private PathChildrenCache pathChildrenCache;
 	
-	@Resource
 	private NodeStateObserver nodeStateObserver;
 	
 	@Value("${workflow.zk.host}")
@@ -32,6 +31,9 @@ public class ZkRelationshipManager implements RelationshipManager{
 	@Value("${workflow.zk.path}")
 	private String zkPath;
 	
+	@Resource
+	private RelationshipProcessor relationshipProcessor;
+	
 	@PostConstruct
 	public void init() throws Exception{
 		
@@ -39,7 +41,7 @@ public class ZkRelationshipManager implements RelationshipManager{
                 connectString(zkHost).namespace(zkPath).build();
 		this.leaderLatch = new LeaderLatch(curatorFramework, LATCH_PATH, InetAddress.getLocalHost().getHostAddress());
 		this.pathChildrenCache = new PathChildrenCache(curatorFramework, zkPath, false);
-		this.nodeStateObserver.setLeaderLatch(leaderLatch);
+		this.nodeStateObserver = new NodeStateObserver(leaderLatch, relationshipProcessor);
 		this.pathChildrenCache.getListenable().addListener(nodeStateObserver);
 	}
 	

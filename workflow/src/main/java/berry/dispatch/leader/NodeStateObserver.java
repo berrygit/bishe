@@ -1,7 +1,5 @@
 package berry.dispatch.leader;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
@@ -15,17 +13,17 @@ public class NodeStateObserver implements PathChildrenCacheListener {
 
 	private LeaderLatch leaderLatch;
 
-	@Resource
 	private RelationshipProcessor relationshipProcessor;
 
 	private String lastLeaderId = "";
 
 	private final String selfNodeId = LocalAddress.getIp();
 	
-	public void setLeaderLatch(LeaderLatch leaderLatch) {
+	public NodeStateObserver(LeaderLatch leaderLatch, RelationshipProcessor relationshipProcessor){
 		this.leaderLatch = leaderLatch;
+		this.relationshipProcessor = relationshipProcessor;
 	}
-
+	
 	private void changeNodeRole() throws InterruptedException {
 		
 		String leaderId = "";
@@ -70,8 +68,6 @@ public class NodeStateObserver implements PathChildrenCacheListener {
 			break;
 		case CONNECTION_RECONNECTED:
 		case INITIALIZED:
-			// 启动
-			relationshipProcessor.start();
 			lastLeaderId="";
 			changeNodeRole();
 			break;
