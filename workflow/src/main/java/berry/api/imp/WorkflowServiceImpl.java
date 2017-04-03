@@ -46,20 +46,20 @@ public class WorkflowServiceImpl implements WorkflowService {
 
 	}
 
-	private void storeWorkflowInstanceForDispatch(String requestId, String workflowName, Object request) {
+	private WorkflowInstanceBean storeWorkflowInstanceForExecute(String requestId, String workflowName, Object request) {
 		
 		WorkflowInstanceBean instance = new WorkflowInstanceBean();
 		instance.setNode(LocalAddress.getIp());
 
-		storeWorkflowInstance(instance, requestId, workflowName, request);
+		return storeWorkflowInstance(instance, requestId, workflowName, request);
 
 	}
 
-	private WorkflowInstanceBean storeWorkflowInstanceForExecute(String requestId, String workflowName,
+	private void storeWorkflowInstanceForDispatch(String requestId, String workflowName,
 			Object request) {
 
 		WorkflowInstanceBean instance = new WorkflowInstanceBean();
-		return storeWorkflowInstance(instance, requestId, workflowName, request);
+		storeWorkflowInstance(instance, requestId, workflowName, request);
 	}
 
 	private WorkflowInstanceBean storeWorkflowInstance(WorkflowInstanceBean instance, String requestId,

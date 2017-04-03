@@ -1,0 +1,58 @@
+<div class="row" id="page-specific">
+    <div class="blog-main container">
+        <div class="blog-post">
+            <h2 class="blog-post-title">Houyi Ops Service 简介</h2>
+            <p class="blog-post-meta">Feb 22, 2017 by <a href="#">Houyi</a></p>
+
+            <h3><strong>库存 -> 按地域</strong></h3>
+            <p>
+                默认按zone级别展示库存信息。可按照cluster、available zone、big region聚合数据。
+            </p>
+            <p>
+                <strong>zone库存数据展示项：</strong>
+                <ul>
+                    <li>zone：zone标记</li>
+                    <li>最大规格：zone可生产的最大规格，以及当前库存量</li>
+                    <li>最小规格：zone可生产的最小规格，以及当前库存量</li>
+                    <li>公网ip：zone内可用于生产的公网ip数目，分classic和vpc两种网络类型展示</li>
+                    <li>私网ip：zone内可用于生产的私网ip数目，分classic和vpc两种网络类型展示</li>
+                    <li>mac：zone内可用于生产的mac数目</li>
+                    <li>最大库存：zone可生产的各个规格实例中，可生产数目最大的规格和数目</li>
+                    <li>最小库存：zone可生产的各个规格实例中，可生产数目最小的规格和数目</li>
+                    <li>系列：zone可以生产的实例系列。参考<a href="https://help.aliyun.com/document_detail/25685.html">实例资源规格对照表</a></li>
+                </ul>
+            </p>
+            <p>
+                <strong>zone内各规格库存展示项：</strong>（单击zone库存展示行以展开）
+                <ul>
+                    <li>规格：规格名。参考<a href="https://help.aliyun.com/document_detail/25685.html">实例资源规格对照表</a></li>
+                    <li>cpu/mem：该规格对应的cpu和memory的数目</li>
+                    <li>可售量：综合水位线，mac，ip等限制条件计算出的可售卖数目</li>
+                    <li>余量：仅考虑cpu和memory计算出的可生产数目</li>
+                    <li>总量：总可生产数目</li>
+                    <li>低/高水位：低水位线（关闭售卖水位线），高水位线（打开售卖水位线）</li>
+                    <li>io优化：该规格是否支持io优化实例</li>
+                    <li>网络：网络类型，classic/vpc</li>
+                    <li>存储：支持生产该规格的底层存储类型</li>
+                    <li>磁盘：磁盘为本地磁盘/云磁盘，local/cloud</li>
+                </ul>
+            </p>
+            <p id="zone_color_def">
+                <strong>zone字段颜色标记：</strong>
+                <ul>
+                    <li><font color='red'>红色</font>，zone最终售卖状态达到OFFLINE</li>
+                    <li><font color='orange'>橙色</font>，zone内存在一个规格的可售卖数达到总数的90%</li>
+                    <li>默认色，zone正常售卖状态</li>
+                </ul>
+            </p>
+            <p>
+                <strong>数据展示项特殊说明：</strong>
+                <ul>
+                    <li>“最大规格，最小规格，公网ip，私网ip，mac”展示可售卖数目（考虑水位和其他资源限制）</li>
+                    <li>“最大库存，最小库存”展示为只计算cpu/memory的可生产数目</li>
+                    <li>“公网ip，私网ip，mac”颜色标记同“<a href="#zone_color_def">zone字段颜色标记</a>”</li>
+                </ul>
+            </p>
+        </div>
+    </div>
+</div>

@@ -22,6 +22,6 @@ public interface WorkflowInstanceDao {
 	
 	void updateStatusAndNodeInfoById(WorkflowInstanceBean instance);
 	
-	int updateStatusAndNodeInfoByIdAndNodeisEmpty(WorkflowInstanceBean instance);
+	int updateNodeInfoByIdAndNodeisEmpty(WorkflowInstanceBean instance);
 
 }

@@ -2,7 +2,6 @@ package berry.dispatch.handler;
 
 import javax.annotation.Resource;
 
-import berry.common.enums.WorkflowInstanceState;
 import berry.db.dao.WorkflowInstanceDao;
 import berry.db.po.WorkflowInstanceBean;
 import berry.dispatch.common.LocalAddress;
@@ -33,13 +32,13 @@ public class RpcRequestHandler extends SimpleChannelInboundHandler<RpcCallMessag
 		// 返回响应
 		ctx.channel().writeAndFlush(response);
 		
+		// 更新节点信息
 		WorkflowInstanceBean instance = new WorkflowInstanceBean();
 		
-		instance.setStatus(WorkflowInstanceState.RUNNING.name());
 		instance.setNode(LocalAddress.getIp());
 		
 		// 否则过滤掉
-		if (workflowInstanceDao.updateStatusAndNodeInfoByIdAndNodeisEmpty(instance) == 1) {
+		if (workflowInstanceDao.updateNodeInfoByIdAndNodeisEmpty(instance) == 1) {
 			worklfowEngine.execute(instance);
 		}
 	}

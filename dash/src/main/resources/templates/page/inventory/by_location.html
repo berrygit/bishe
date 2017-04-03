@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8"/>
+</head>
+
+<div class="row" id="page-inventory-by_location">
+    <div class="col-sm-3 col-md-2 sidebar">
+        <div class="input-group" style="overflow:auto;">
+            <input id="region-tree-search" type="text" class="form-control" placeholder="search..."/>
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right " role="menu">
+                </ul>
+            </div>
+        </div>
+        <br/>
+        <div style="text-align: right;">
+            <button type="button" class="btn btn-sm" id="btn-collapse-all" onclick="collapseAll()">
+                <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div style="overflow: auto; height: 90%;">
+            <div id="region-tree"></div>
+        </div>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <nav id="location-level-selector">
+        </nav>
+        <div class="table-responsive">
+            <table id="inventory-table"></table>
+        </div>
+        
+        <!--弹出窗口-->
+        <div class="modal" id="detailPage" role="dialog">
+            <div class="modal-dialog" role="document" style="width:80%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="gridSystemModalLabel">zone库存详情</h4>
+                    </div>
+                    <div class="modal-body">
+                    
+                        <h4>基本信息</h4>
+                        <br></br>
+                        <div class="container-fluid">
+                            <form class="form-horizontal">
+                                <div class="form-group col-xs-4">
+                                    <label class="col-xs-5 control-label">Zone:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id="zoneInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group col-xs-4" >
+                                    <label class="col-xs-5 control-label">Cluster:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id="clusterInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group col-xs-4" >
+                                    <label class="col-xs-5 control-label">AvailableZone:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id="aZoneInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="container-fluid">
+                            <form class="form-horizontal">
+                                <div class="form-group col-xs-4" >
+                                    <label class="col-xs-5 control-label">Region:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id="regionInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-4">
+                                    <label class="col-xs-5 control-label">io优化:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id="ioOptimizedInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-4" >
+                                    <label class="col-xs-5 control-label">网络:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id="networkInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                            
+                        <div class="container-fluid">
+                            <form class="form-horizontal">
+                                <div class="form-group col-xs-4" >
+                                    <label class="col-xs-5 control-label">存储:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id="storageInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-4" >
+                                    <label class="col-xs-5 control-label">io:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id="ioInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-4">
+                                    <label class="col-xs-5 control-label">generation:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id="generationInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                            
+                            
+
+                        <h4>状态信息</h4>
+                        <br></br>
+                        <div class="container-fluid">
+                            <form class="form-horizontal">
+                                <div class="form-group col-xs-4">
+                                    <label class="col-xs-5 control-label">最终状态:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id="finalStatusInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-4" >
+                                    <label class="col-xs-5 control-label">classic状态:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id="classicStatusInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-4" >
+                                    <label class="col-xs-5 control-label">vpc状态:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id="vpcStatusInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    
+                        <div class="container-fluid">
+                            <form class="form-horizontal">
+                                <div class="form-group col-xs-4" >
+                                    <label class="col-xs-5 control-label">状态依据:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id = "locationStatusInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-4">
+                                    <label class="col-xs-5 control-label">AUTO_STATUS:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id = "autoStatusInfo" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-4" >
+                                    <label class="col-xs-5 control-label">开关状态:</label>
+                                    <div class="col-xs-7 ">
+                                        <p id = "manualStatus" class="form-control-static"></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        
+                        <h4>资源信息</h4>
+                        <br></br>
+                        <div class="table-responsive">
+                            <table id="inventory-resource-table"></table>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>
