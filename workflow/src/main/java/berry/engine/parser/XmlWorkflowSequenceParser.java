@@ -9,6 +9,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,9 @@ public class XmlWorkflowSequenceParser implements Parser, ApplicationContextAwar
 	private ApplicationContext context;
 
 	private Map<String, Instance> instanceCache = new HashMap<String, Instance>();
+	
+	@Value("${workflow.bean.only.spring.switch}")
+	private boolean loadOnlyFromSpring;
 
 	@PostConstruct
 	public void init() throws Exception {
@@ -37,7 +41,7 @@ public class XmlWorkflowSequenceParser implements Parser, ApplicationContextAwar
 		reader = parser.getXMLReader();
 
 		// 设置内容处理器
-		handler = new XmlWorkflowInstanceHandler(this.context);
+		handler = new XmlWorkflowInstanceHandler(this.context, this.loadOnlyFromSpring);
 
 		reader.setContentHandler(handler);
 

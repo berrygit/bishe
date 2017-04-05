@@ -11,7 +11,5 @@ public class TimeoutChecker {
 		if ((gmtBegin.getTime() + timeoutMils) < System.currentTimeMillis()) {
 			throw new TimeoutException();
 		}
-
 	}
-
 }

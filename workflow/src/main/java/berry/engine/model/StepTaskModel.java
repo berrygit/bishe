@@ -32,29 +32,18 @@ public class StepTaskModel implements StepTask {
 		try {
 			result = (Map<String, Object>) method.invoke(this.entity, context);
 		} catch (IllegalAccessException | IllegalArgumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException t) {
 			throw (Exception)t.getTargetException();
 		}
 
 		return result;
-
 	}
 
-	public String getAction() {
-		return action;
-	}
-
-	public void setActionAndEntity(String action, Object entity) throws NoSuchMethodException, SecurityException {
-		this.action = action;
+	@Override
+	public void setInvokeMetaInfo(String method, Object entity) throws NoSuchMethodException, SecurityException {
 		this.entity = entity;
-
-		this.method = this.entity.getClass().getMethod(action, WorkflowContext.class);
-	}
-
-	public Object getEntity() {
-		return entity;
+		this.method = this.entity.getClass().getMethod(method, WorkflowContext.class);
 	}
 
 	public long getMaxRetry() {
@@ -81,6 +70,10 @@ public class StepTaskModel implements StepTask {
 		this.retryStrategy = retryStrategy;
 	}
 
+	public void setAction(String action) {
+		this.action = action;
+	}
+	
 	@Override
 	public String getStepName() {
 		return action;

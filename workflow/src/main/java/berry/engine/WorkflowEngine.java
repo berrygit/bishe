@@ -6,6 +6,6 @@ public interface WorkflowEngine {
 
 	void execute(WorkflowInstanceBean instance);
 
-	void rollback(WorkflowInstanceBean instance) throws Exception;
+	void rollback(WorkflowInstanceBean instance);
 
 }

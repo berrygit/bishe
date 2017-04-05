@@ -9,14 +9,14 @@ import berry.common.enums.WorkflowInstanceState;
 import berry.common.exception.TimeoutException;
 import berry.db.dao.WorkflowInstanceDao;
 import berry.db.po.WorkflowInstanceBean;
-import berry.engine.invoke.SteptaskInvokeStrategy;
+import berry.engine.invoke.InvokeStrategy;
 import berry.engine.model.interfaces.Instance;
 import berry.engine.model.interfaces.RollbackTask;
 import berry.engine.model.interfaces.StepTask;
 import berry.engine.retry.RetryStrategyFactory;
 import berry.engine.retry.interfaces.RetryStrategy;
 
-public class RunnableTask implements Runnable {
+public class RunnableWorkflowTask implements Runnable {
 
 	private WorkflowInstanceBean instance;
 
@@ -24,13 +24,13 @@ public class RunnableTask implements Runnable {
 
 	private WorkflowMetaInfo workflowMetaInfo;
 
-	private SteptaskInvokeStrategy steptaskInvokeStrategy;
+	private InvokeStrategy taskInvokeStrategy;
 
-	public RunnableTask(WorkflowInstanceBean instance, WorkflowInstanceDao workflowInstanceDao,
-			WorkflowMetaInfo workflowMetaInfo, SteptaskInvokeStrategy steptaskInvokeStrategy) {
+	public RunnableWorkflowTask(WorkflowInstanceBean instance, WorkflowInstanceDao workflowInstanceDao,
+			WorkflowMetaInfo workflowMetaInfo, InvokeStrategy taskInvokeStrategy) {
 
 		this.instance = instance;
-		this.steptaskInvokeStrategy = steptaskInvokeStrategy;
+		this.taskInvokeStrategy = taskInvokeStrategy;
 		this.workflowInstanceDao = workflowInstanceDao;
 		this.workflowMetaInfo = workflowMetaInfo;
 
@@ -50,19 +50,20 @@ public class RunnableTask implements Runnable {
 		List<StepTask> stepTaskList = workflowInstance.getStepTaskList();
 		RollbackTask rollbackTask = workflowInstance.getRollbackTask();
 		WorkflowContext context = JSON.parseObject(instance.getInitInfo(), WorkflowContext.class);
+		WorkflowContext initContext = context;
 
 		try {
 
 			for (StepTask stepTask : stepTaskList) {
 
 				try {
-					context = steptaskInvokeStrategy.invoke(instance, stepTask, context);
+					context = taskInvokeStrategy.invoke(instance, stepTask, context);
 				} catch (Exception e) {
-					
+
 					e.printStackTrace();
 
 					RetryStrategy retryStrategy = RetryStrategyFactory.get(stepTask.getRetryStrategy());
-					retryStrategy.retry(steptaskInvokeStrategy, instance, stepTask, context);
+					retryStrategy.retry(taskInvokeStrategy, instance, stepTask, context);
 				}
 			}
 
@@ -81,7 +82,8 @@ public class RunnableTask implements Runnable {
 
 				// 回滚
 				try {
-					rollbackTask.invoke(context);
+
+					taskInvokeStrategy.invoke(instance, rollbackTask, initContext);
 
 					instance.setStatus(WorkflowInstanceState.FAILED.name());
 					workflowInstanceDao.updateStatus(instance);

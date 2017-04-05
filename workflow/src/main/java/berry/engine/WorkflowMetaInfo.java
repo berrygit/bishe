@@ -32,5 +32,4 @@ public class WorkflowMetaInfo {
 		return instances.get(workflowName);
 
 	}
-
 }

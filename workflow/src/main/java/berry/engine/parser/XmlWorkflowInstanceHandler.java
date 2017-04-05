@@ -12,7 +12,9 @@ import org.xml.sax.helpers.DefaultHandler;
 import berry.engine.model.RollbackTaskModel;
 import berry.engine.model.StepTaskModel;
 import berry.engine.model.WorkflowInstanceModel;
+import berry.engine.model.interfaces.RollbackTask;
 import berry.engine.model.interfaces.StepTask;
+import berry.engine.model.interfaces.Task;
 
 public class XmlWorkflowInstanceHandler extends DefaultHandler {
 
@@ -20,16 +22,19 @@ public class XmlWorkflowInstanceHandler extends DefaultHandler {
 
 	private WorkflowInstanceModel instance;
 
-	private StepTaskModel task;
+	private StepTask task;
 
-	private RollbackTaskModel rollbackTask;
+	private RollbackTask rollbackTask;
 
 	private List<StepTask> stepTaskList;
 
 	private ApplicationContext context;
+	
+	private boolean loadOnlyFromSpring = false;
 
-	public XmlWorkflowInstanceHandler(ApplicationContext context) {
+	public XmlWorkflowInstanceHandler(ApplicationContext context, boolean loadOnlyFromSpring) {
 		this.context = context;
+		this.loadOnlyFromSpring = loadOnlyFromSpring;
 	}
 
 	@Override
@@ -47,49 +52,19 @@ public class XmlWorkflowInstanceHandler extends DefaultHandler {
 
 		} else if ("step".equals(currentTag)) {
 			task = new StepTaskModel();
-
-			String action = attributes.getValue("action");
-
-			String clazz = attributes.getValue("entity");
-
-			Map<String, ?> beans;
-			try {
-				beans = context.getBeansOfType(Class.forName(clazz));
-
-				if (beans != null && !beans.isEmpty()) {
-					task.setActionAndEntity(action, beans.values().iterator().next());
-				} else {
-					task.setActionAndEntity(action, Class.forName(clazz).newInstance());
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new IllegalStateException(e);
-			}
 			
-			task.setMaxRetry(Integer.valueOf(attributes.getValue("maxRetry")));
-			task.setRetryIntervalMlis(Integer.valueOf(attributes.getValue("retryIntervalMlis")));
+			setInvodeMeteInfo(attributes, task);
+			
+			task.setAction(attributes.getValue("action"));
+			task.setMaxRetry(Long.valueOf(attributes.getValue("maxRetry")));
+			task.setRetryIntervalMlis(Long.valueOf(attributes.getValue("retryIntervalMlis")));
 			task.setRetryStrategy((attributes.getValue("retryStrategy")));
 
 		} else if ("rollback".equals(currentTag)) {
+			
 			rollbackTask = new RollbackTaskModel();
 			
-			String action = attributes.getValue("action");
-
-			String clazz = attributes.getValue("entity");
-
-			Map<String, ?> beans;
-			try {
-				beans = context.getBeansOfType(Class.forName(clazz));
-
-				if (beans != null && !beans.isEmpty()) {
-					rollbackTask.setActionAndEntity(action, beans.values().iterator().next());
-				} else {
-					rollbackTask.setActionAndEntity(action, Class.forName(clazz).newInstance());
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new IllegalStateException(e);
-			}
+			setInvodeMeteInfo(attributes, rollbackTask);
 		}
 	}
 	
@@ -102,6 +77,32 @@ public class XmlWorkflowInstanceHandler extends DefaultHandler {
 		} else if ("rollback".equals(currentTag)) {
 
 			instance.setRollbackTask(rollbackTask);
+		}
+	}
+	
+	private void setInvodeMeteInfo(Attributes attributes, Task task){
+		
+		String method = attributes.getValue("method");
+
+		String clazz = attributes.getValue("entity");
+
+		Map<String, ?> beans;
+		try {
+			beans = context.getBeansOfType(Class.forName(clazz));
+
+			if (beans != null && !beans.isEmpty()) {
+				task.setInvokeMetaInfo(method, beans.values().iterator().next());
+			} else {
+				
+				if (loadOnlyFromSpring){
+					throw new IllegalStateException("can't bean find in spring");
+				}
+				
+				task.setInvokeMetaInfo(method, Class.forName(clazz).newInstance());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new IllegalStateException(e);
 		}
 	}
 

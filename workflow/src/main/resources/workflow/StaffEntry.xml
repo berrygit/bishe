@@ -1,26 +1,26 @@
-<workflow-sequence name='StaffEntry' timeoutMils="60000">
+<workflow-sequence name="StaffEntry" timeoutMils="60000">
 
 	<!--个人信息核查-->
-	<step action='checkPersonalInfo' entity='berry.demo.StaffEntryAction' maxRetry='3'
-		retryIntervalMlis='1000' retryStrategy='const'></step>
+	<step action="checkPersonalInfo" method="checkPersonalInfo" entity="berry.demo.StaffEntryAction" 
+		maxRetry="3" retryIntervalMlis="1000" retryStrategy="const"></step>
 	
 	<!--签署合同-->	
-	<step action='signContract' entity='berry.demo.StaffEntryAction' maxRetry='3'
-		retryIntervalMlis='1000' retryStrategy='step'></step>		
+	<step action="signContract" method="signContract" entity="berry.demo.StaffEntryAction" 
+		maxRetry="3" retryIntervalMlis="1000" retryStrategy="step"></step>		
 	
 	<!--培训-->
-	<step action='train' entity='berry.demo.StaffEntryAction' maxRetry='3'
-		retryIntervalMlis='1000' retryStrategy='index'></step>
+	<step action="train" method="train" entity="berry.demo.StaffEntryAction"
+		maxRetry="3" retryIntervalMlis="1000" retryStrategy="index"></step>
 	
 	<!--发放固定资产-->
-	<step action='grandFixedAssets' entity='berry.demo.StaffEntryAction' maxRetry='3'
-		retryIntervalMlis='1000' retryStrategy='step'></step>
+	<step action="grandFixedAssets" method="grandFixedAssets" entity="berry.demo.StaffEntryAction" 
+		maxRetry="3" retryIntervalMlis="1000" retryStrategy="step"></step>
 	
 	<!--发放薪资卡-->
-	<step action='assginFinanceCard' entity='berry.demo.StaffEntryAction' maxRetry='3'
-		retryIntervalMlis='1000' retryStrategy='step'></step>
+	<step action="assginFinanceCard" method="assginFinanceCard" entity="berry.demo.StaffEntryAction"
+		maxRetry="3" retryIntervalMlis="1000" retryStrategy="step"></step>
 	
 	<!--该员工有无法入职的意外原因发生，无法入职，清空相关记录，或回收相关资产-->
-	<rollback action='clearStaffInfo' entity='berry.demo.StaffEntryAction'></rollback>
+	<rollback method="clearStaffInfo" entity="berry.demo.StaffEntryAction"></rollback>
 
 </workflow-sequence>

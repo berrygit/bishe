@@ -11,7 +11,7 @@ import berry.engine.model.interfaces.RollbackTask;
 
 public class RollbackTaskModel implements RollbackTask {
 
-	private String action;
+	private String action = "rollback";
 
 	private Object entity;
 
@@ -30,11 +30,10 @@ public class RollbackTaskModel implements RollbackTask {
 		return ReflectionToStringBuilder.toString(this);
 	}
 	
-	public void setActionAndEntity(String action, Object entity) throws NoSuchMethodException, SecurityException {
-		this.action = action;
+	public void setInvokeMetaInfo(String method, Object entity) throws NoSuchMethodException, SecurityException {
+		
 		this.entity = entity;
-
-		this.method = this.entity.getClass().getMethod(action, WorkflowContext.class);
+		this.method = this.entity.getClass().getMethod(method, WorkflowContext.class);
 	}
 
 	@Override
