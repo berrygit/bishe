@@ -46,30 +46,37 @@ public class StepTaskModel implements StepTask {
 		this.method = this.entity.getClass().getMethod(method, WorkflowContext.class);
 	}
 
+	@Override
 	public long getMaxRetry() {
 		return maxRetry;
 	}
 
+	@Override
 	public void setMaxRetry(long maxRetry) {
 		this.maxRetry = maxRetry;
 	}
 
+	@Override
 	public long getRetryIntervalMlis() {
 		return retryIntervalMlis;
 	}
 
+	@Override
 	public void setRetryIntervalMlis(long retryIntervalMlis) {
 		this.retryIntervalMlis = retryIntervalMlis;
 	}
 
+	@Override
 	public String getRetryStrategy() {
 		return retryStrategy;
 	}
 
+	@Override
 	public void setRetryStrategy(String retryStrategy) {
 		this.retryStrategy = retryStrategy;
 	}
 
+	@Override
 	public void setAction(String action) {
 		this.action = action;
 	}

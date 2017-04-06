@@ -11,19 +11,9 @@ import berry.engine.model.interfaces.RollbackTask;
 
 public class RollbackTaskModel implements RollbackTask {
 
-	private String action = "rollback";
-
 	private Object entity;
 
 	private Method method;
-
-	public String getAction() {
-		return action;
-	}
-
-	public Object getEntity() {
-		return entity;
-	}
 
 	@Override
 	public String toString() {
@@ -48,6 +38,11 @@ public class RollbackTaskModel implements RollbackTask {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public String getStepName() {
+		return "rollback";
 	}
 
 }

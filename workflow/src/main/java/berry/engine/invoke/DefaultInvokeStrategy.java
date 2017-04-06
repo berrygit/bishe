@@ -27,6 +27,11 @@ public class DefaultInvokeStrategy implements InvokeStrategy {
 	@Override
 	public WorkflowContext invoke(WorkflowInstanceBean instance, Task task, WorkflowContext context) throws Exception {
 
+		if (task == null) {
+			System.out.println("task is empty");
+			throw new IllegalStateException("task is empty");
+		}
+		
 		// 只对正常任务进行超时校验
 		if (task instanceof StepTask){
 			TimeoutChecker.check(instance.getTimeoutMils(), instance.getGmtBegin());

@@ -25,7 +25,7 @@
 </select>
 
 <select id="getInstanceByRequestIdAndWorkflowName" parameterType="berry.db.po.WorkflowInstanceBean" resultMap="instanceMap">  
-    SELECT * FROM WORKFLOW_INSTANCE WHERE REQUEST_ID=#{requestId} AND WORKFLOW_NAME=#{workflowName}
+    SELECT * FROM WORKFLOW_INSTANCE WHERE REQUEST_ID=#{requestId}
 </select>
 
 <update id="updateStatus" parameterType="berry.db.po.WorkflowInstanceBean">  

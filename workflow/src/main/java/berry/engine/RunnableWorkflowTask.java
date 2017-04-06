@@ -38,14 +38,19 @@ public class RunnableWorkflowTask implements Runnable {
 
 	public void run() {
 
+		Instance workflowInstance = workflowMetaInfo.getInstanceInfo(instance.getWorkflowName());
+
+		if (workflowInstance == null) {
+			System.out.println("can't find workflow info");
+			return;
+		}
+
 		// 更新状态
 		instance.setStatus(WorkflowInstanceState.RUNNING.name());
 		workflowInstanceDao.updateStatus(instance);
 
 		// 更新创建时间等信息
 		instance = workflowInstanceDao.getInstance(instance);
-
-		Instance workflowInstance = workflowMetaInfo.getInstanceInfo(instance.getWorkflowName());
 
 		List<StepTask> stepTaskList = workflowInstance.getStepTaskList();
 		RollbackTask rollbackTask = workflowInstance.getRollbackTask();
@@ -79,18 +84,20 @@ public class RunnableWorkflowTask implements Runnable {
 				workflowInstanceDao.updateStatus(instance);
 
 			} else {
+				instance.setStatus(WorkflowInstanceState.FAILED.name());
+				workflowInstanceDao.updateStatus(instance);
+			}
+			
+			if (rollbackTask == null){
+				return;
+			}
 
-				// 回滚
-				try {
-
-					taskInvokeStrategy.invoke(instance, rollbackTask, initContext);
-
-					instance.setStatus(WorkflowInstanceState.FAILED.name());
-					workflowInstanceDao.updateStatus(instance);
-
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
+			// 回滚
+			try {
+				
+				taskInvokeStrategy.invoke(instance, rollbackTask, initContext);
+			} catch (Exception e1) {
+				e1.printStackTrace();
 			}
 		}
 	}
