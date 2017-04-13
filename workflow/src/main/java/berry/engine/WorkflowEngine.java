@@ -4,8 +4,12 @@ import berry.db.po.WorkflowInstanceBean;
 
 public interface WorkflowEngine {
 
-	void execute(WorkflowInstanceBean instance);
+	void execute(WorkflowInstanceBean instance) throws Exception;
 
-	void rollback(WorkflowInstanceBean instance);
+	void executeForHumanRollback(WorkflowInstanceBean instance) throws Exception;
+
+	void executeForHumanRetry(WorkflowInstanceBean instance) throws Exception;
+
+	void rollback(WorkflowInstanceBean instance) throws Exception;
 
 }

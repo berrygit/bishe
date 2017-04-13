@@ -4,6 +4,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -17,6 +19,7 @@ import berry.dispatch.InstanceSender;
 import berry.dispatch.TaskDispatcher;
 import berry.dispatch.WorkerManager;
 import berry.dispatch.common.LocalCache;
+import berry.engine.WorkflowEngine;
 
 @Component
 public class DefaultTaskDispatcher implements TaskDispatcher {
@@ -36,7 +39,12 @@ public class DefaultTaskDispatcher implements TaskDispatcher {
 	@Resource
 	private WorkflowInstanceDao workflowInstanceDao;
 	
+	@Resource
+	private WorkflowEngine workflowEngine;
+	
 	private ExecutorService executorService;
+
+	private ScheduledExecutorService scheduledExecutorService;
 	
 	private BlockingQueue<WorkflowInstanceBean> workflowQueue;
 
@@ -47,6 +55,8 @@ public class DefaultTaskDispatcher implements TaskDispatcher {
 	private TaskSenderThread taskSenderThread;
 	
 	private TaskPullThread taskPullThread;
+	
+	private HumanTaskThread humanTaskThread;
 	
 	@PostConstruct
 	public void init() {
@@ -63,6 +73,10 @@ public class DefaultTaskDispatcher implements TaskDispatcher {
 		
 		this.taskPullThread = new TaskPullThread(workflowInstanceDao, workflowQueue, flowlimit, workerManager);
 		
+		this.scheduledExecutorService = Executors.newScheduledThreadPool(1);
+		
+		this.humanTaskThread = new HumanTaskThread(workflowInstanceDao, workflowEngine);
+		
 	}
 
 	@Override
@@ -74,6 +88,7 @@ public class DefaultTaskDispatcher implements TaskDispatcher {
 		this.executorService.execute(retrySenderThread);
 		this.executorService.execute(taskSenderThread);
 		this.executorService.execute(taskPullThread);
+		this.scheduledExecutorService.schedule(humanTaskThread, 1, TimeUnit.MINUTES);
 
 	}
 
@@ -82,6 +97,8 @@ public class DefaultTaskDispatcher implements TaskDispatcher {
 		
 		executorService.shutdownNow();
 		executorService = null;
+		scheduledExecutorService.shutdownNow();
+		scheduledExecutorService = null;
 		
 		LocalCache.clear();
 

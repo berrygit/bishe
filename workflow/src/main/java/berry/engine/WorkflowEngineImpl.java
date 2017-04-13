@@ -7,14 +7,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSON;
-
-import berry.api.WorkflowContext;
 import berry.db.dao.WorkflowInstanceDao;
 import berry.db.po.WorkflowInstanceBean;
 import berry.engine.invoke.InvokeStrategy;
+import berry.engine.invoke.NoTimeoutInvokeStrategy;
 import berry.engine.model.interfaces.Instance;
-import berry.engine.model.interfaces.RollbackTask;
 
 @Component("workflowEngine")
 public class WorkflowEngineImpl implements WorkflowEngine {
@@ -27,38 +24,54 @@ public class WorkflowEngineImpl implements WorkflowEngine {
 
 	@Resource
 	private InvokeStrategy taskInvokeStrategy;
+	
+	@Resource
+	private NoTimeoutInvokeStrategy noTimeoutInvokeStrategy;
 
 	private ExecutorService pool = Executors.newFixedThreadPool(40);
 
 	@Override
-	public void execute(WorkflowInstanceBean instance) {
-		pool.submit(new RunnableWorkflowTask(instance, workflowInstanceDao, workflowMetaInfo, taskInvokeStrategy));
+	public void execute(WorkflowInstanceBean instance) throws Exception {
+		
+		Instance instancemetaInfo = getInstanceMetaInfo(instance);
+		
+		pool.submit(new RunnableWorkflowTask(instance, instancemetaInfo, workflowInstanceDao, taskInvokeStrategy));
 	}
 
 	@Override
-	public void rollback(WorkflowInstanceBean instance) {
+	public void rollback(WorkflowInstanceBean instance) throws Exception {
+		
+		Instance instancemetaInfo = getInstanceMetaInfo(instance);
+		
+		new RunnableRollbackTask(instance, instancemetaInfo, noTimeoutInvokeStrategy).run();
+	}
+	
+	@Override
+	public void executeForHumanRollback(WorkflowInstanceBean instance) throws Exception {
+		
+		Instance instancemetaInfo = getInstanceMetaInfo(instance);
+		
+		pool.submit(new RunnableRollbackTask(instance, instancemetaInfo, noTimeoutInvokeStrategy));
+	}
+	
+	@Override
+	public void executeForHumanRetry(WorkflowInstanceBean instance) throws Exception {
+		
+		Instance instancemetaInfo = getInstanceMetaInfo(instance);
+		
+		pool.submit(new RunnableWorkflowTask(instance, instancemetaInfo, workflowInstanceDao, noTimeoutInvokeStrategy));
+	}
+	
+	private Instance getInstanceMetaInfo(WorkflowInstanceBean instance) throws Exception{
+		
 		Instance workflowInstance = workflowMetaInfo.getInstanceInfo(instance.getWorkflowName());
-		
-		if(workflowInstance == null) {
-			System.out.println("can't find workflow info");
-			return;
-		}
-		
-		RollbackTask rollbackTask = workflowInstance.getRollbackTask();
-		
-		
-		if(rollbackTask == null) {
-			System.out.println("no rollback task, no need execute");
-			return;
-		}
-		
-		WorkflowContext context = JSON.parseObject(instance.getInitInfo(), WorkflowContext.class);
 
-		try {
-			taskInvokeStrategy.invoke(instance, rollbackTask, context);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (workflowInstance == null) {
+			System.out.println("can't find workflow info");
+			throw new Exception("can't find workflow info");
 		}
+		
+		return workflowInstance;
 	}
 
 }

@@ -20,6 +20,8 @@ public interface WorkflowInstanceDao {
 
 	List<WorkflowInstanceBean> getRunningInstanceByNode(String worker);
 	
+	List<WorkflowInstanceBean> getHumanOperationInstance();
+	
 	void updateStatusAndNodeInfoById(WorkflowInstanceBean instance);
 	
 	int updateNodeInfoByIdAndNodeisEmpty(WorkflowInstanceBean instance);

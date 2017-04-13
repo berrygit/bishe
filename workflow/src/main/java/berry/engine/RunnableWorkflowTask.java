@@ -20,30 +20,23 @@ public class RunnableWorkflowTask implements Runnable {
 
 	private WorkflowInstanceBean instance;
 
-	private WorkflowInstanceDao workflowInstanceDao;
+	private Instance workflowInstance;
 
-	private WorkflowMetaInfo workflowMetaInfo;
+	private WorkflowInstanceDao workflowInstanceDao;
 
 	private InvokeStrategy taskInvokeStrategy;
 
-	public RunnableWorkflowTask(WorkflowInstanceBean instance, WorkflowInstanceDao workflowInstanceDao,
-			WorkflowMetaInfo workflowMetaInfo, InvokeStrategy taskInvokeStrategy) {
+	public RunnableWorkflowTask(WorkflowInstanceBean instance, Instance workflowInstance,
+			WorkflowInstanceDao workflowInstanceDao, InvokeStrategy taskInvokeStrategy) {
 
 		this.instance = instance;
+		this.workflowInstance = workflowInstance;
 		this.taskInvokeStrategy = taskInvokeStrategy;
 		this.workflowInstanceDao = workflowInstanceDao;
-		this.workflowMetaInfo = workflowMetaInfo;
 
 	}
 
 	public void run() {
-
-		Instance workflowInstance = workflowMetaInfo.getInstanceInfo(instance.getWorkflowName());
-
-		if (workflowInstance == null) {
-			System.out.println("can't find workflow info");
-			return;
-		}
 
 		// 更新状态
 		instance.setStatus(WorkflowInstanceState.RUNNING.name());
@@ -87,14 +80,13 @@ public class RunnableWorkflowTask implements Runnable {
 				instance.setStatus(WorkflowInstanceState.FAILED.name());
 				workflowInstanceDao.updateStatus(instance);
 			}
-			
-			if (rollbackTask == null){
+
+			if (rollbackTask == null) {
 				return;
 			}
 
 			// 回滚
 			try {
-				
 				taskInvokeStrategy.invoke(instance, rollbackTask, initContext);
 			} catch (Exception e1) {
 				e1.printStackTrace();

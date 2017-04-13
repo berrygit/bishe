@@ -18,13 +18,13 @@ function loadPageNode() {
             title: '操作'
         }],
         data: [{
-        	role: 'master/worker',status:'OK',node:'10.182.27.31',count:'54734' ,operation:'<a>删除</a>'
+        	role: 'master/worker',status:'OK',node:'10.182.27.31',count:'54734' ,operation:'<a>删除</a>&nbsp;&nbsp;<a>修改</a>'
         }, {
-        	role: 'worker',status:'OK',node:'10.182.27.32',count:'52873', operation:'<a>删除</a>'
+        	role: 'worker',status:'OK',node:'10.182.27.32',count:'52873', operation:'<a>删除</a>&nbsp;&nbsp;<a>修改</a>'
         }, {
-        	role: 'worker',status:'OK',node:'10.182.27.33',count:'51321', operation:'<a>删除</a>'
+        	role: 'worker',status:'OK',node:'10.182.27.33',count:'51321', operation:'<a>删除</a>&nbsp;&nbsp;<a>修改</a>'
         }, {
-        	role: 'worker',status:'OK',node:'10.182.27.34',count:'55876', operation:'<a>删除</a>'
+        	role: 'worker',status:'OK',node:'10.182.27.34',count:'55876', operation:'<a>删除</a>&nbsp;&nbsp;<a>修改</a>'
         }],
         striped: true,
     });

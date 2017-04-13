@@ -1,4 +1,4 @@
-package berry.common.enums;
+package berry.enums;
 
 public enum WorkflowInstanceState {
 

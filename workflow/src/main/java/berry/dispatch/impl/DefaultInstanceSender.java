@@ -21,28 +21,28 @@ import io.netty.channel.Channel;
 
 @Component
 public class DefaultInstanceSender implements InstanceSender {
-	
+
 	@Resource
 	private WorkerManager workerManager;
-	
+
 	@Override
 	public void send(WorkflowInstanceBean workflowInstance) throws NosuitableWorkerException, RpcFailedException {
-		
+
 		Channel sender = workerManager.getSuitableWorker();
-		
+
 		if (sender != null && sender.isWritable()) {
-			
+
 			RpcCallMessage message = new RpcCallMessage();
-			
+
 			message.setWorkflowID(workflowInstance.getId());
 			String messageId = UUID.randomUUID().toString();
 			Exchanger<String> exchanger = new Exchanger<String>();
 			LocalCache.put(messageId, exchanger);
-			
+
 			sender.writeAndFlush(message);
-			
+
 			String result = "";
-			
+
 			try {
 				result = exchanger.exchange("", 3, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
@@ -51,8 +51,8 @@ public class DefaultInstanceSender implements InstanceSender {
 				LocalCache.delete(messageId);
 				throw new RpcFailedException();
 			}
-			
-			if (!ResponseState.SUCCESS.name().equals(result)){
+
+			if (!ResponseState.SUCCESS.name().equals(result)) {
 				throw new RpcFailedException();
 			}
 		} else {

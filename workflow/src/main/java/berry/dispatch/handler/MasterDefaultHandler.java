@@ -16,7 +16,7 @@ import io.netty.util.AttributeKey;
 @Component
 public class MasterDefaultHandler extends ChannelInboundHandlerAdapter {
 	
-	private final AttributeKey<String> SLAVE_ID = AttributeKey.valueOf("MasterDefaultHandler" + this);
+	private final AttributeKey<String> Worker_ID = AttributeKey.valueOf("MasterDefaultHandler" + this);
 	
 	@Resource
     private WorkerManager workerManager;
@@ -27,22 +27,22 @@ public class MasterDefaultHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
     	
-    	Attribute<String> slaveId = ctx.channel().attr(SLAVE_ID);
-    	workerManager.removeWorker(slaveId.get());
+    	Attribute<String> workerId = ctx.channel().attr(Worker_ID);
+    	workerManager.removeWorker(workerId.get());
     }
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object msg) {
     	
-    	Attribute<String> slaveId = ctx.channel().attr(SLAVE_ID);
+    	Attribute<String> workerId = ctx.channel().attr(Worker_ID);
     	
         if (msg instanceof LostHeartbeatEvent) {
-        	workerManager.removeWorker(slaveId.get());
+        	workerManager.removeWorker(workerId.get());
             ctx.channel().close();
-            failOverManager.failOver(slaveId.get());
+            failOverManager.failOver(workerId.get());
         } else if (msg instanceof FindHeartbeatEvent) {
             String nodeId = ((FindHeartbeatEvent) msg).getNodeId();
-            slaveId.set(nodeId);
+            workerId.set(nodeId);
             workerManager.addWorker(nodeId, ctx.channel());
         }
     }

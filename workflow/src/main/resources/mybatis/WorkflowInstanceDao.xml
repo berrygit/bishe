@@ -32,4 +32,8 @@
     UPDATE WORKFLOW_INSTANCE SET STATUS=#{status}, GMT_UPDATE = now() WHERE ID=#{id}
 </update>
 
+<update id="updateNodeInfoByIdAndNodeisEmpty" parameterType="berry.db.po.WorkflowInstanceBean">  
+    UPDATE WORKFLOW_INSTANCE SET NODE=#{node}, GMT_UPDATE = now() WHERE node is null AND ID=#{id}
+</update>
+
 </mapper>  
