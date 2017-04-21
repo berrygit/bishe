@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import berry.common.exception.NotFindFlowException;
 import berry.engine.model.interfaces.Instance;
 import berry.engine.parser.Parser;
 
@@ -27,9 +28,16 @@ public class WorkflowMetaInfo {
 		instances = parser.parse(path);
 	}
 
-	public Instance getInstanceInfo(String workflowName) {
-
-		return instances.get(workflowName);
+	public Instance getInstanceInfo(String workflowName) throws NotFindFlowException {
+		
+		Instance workflowInstance = instances.get(workflowName);
+		
+		if (workflowInstance == null) {
+			System.out.println("can't find workflow info");
+			throw new NotFindFlowException();
+		}
+		
+		return workflowInstance;
 
 	}
 }
