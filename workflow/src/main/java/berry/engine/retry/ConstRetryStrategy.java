@@ -13,7 +13,7 @@ public class ConstRetryStrategy extends AbstractRetryStrategy implements RetrySt
 	private long currentRetry = 0;
 
 	@Override
-	public WorkflowContext retry(InvokeStrategy steptaskInvokeStrategy, WorkflowInstanceBean instance,
+	public WorkflowContext retry(InvokeStrategy taskInvokeStrategy, WorkflowInstanceBean instance,
 			StepTask stepTask, WorkflowContext context) throws Exception {
 
 		if (currentRetry < stepTask.getMaxRetry()) {
@@ -22,7 +22,7 @@ public class ConstRetryStrategy extends AbstractRetryStrategy implements RetrySt
 
 			Thread.sleep(stepTask.getRetryIntervalMlis());
 
-			this.invoke(steptaskInvokeStrategy, instance, stepTask, context);
+			this.invoke(taskInvokeStrategy, instance, stepTask, context);
 		}
 
 		throw new RetryMaxException();

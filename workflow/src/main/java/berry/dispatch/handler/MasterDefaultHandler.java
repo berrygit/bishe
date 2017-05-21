@@ -36,14 +36,14 @@ public class MasterDefaultHandler extends ChannelInboundHandlerAdapter {
     	
     	Attribute<String> workerId = ctx.channel().attr(Worker_ID);
     	
-        if (msg instanceof LostHeartbeatEvent) {
-        	workerManager.removeWorker(workerId.get());
-            ctx.channel().close();
-            failOverManager.failOver(workerId.get());
-        } else if (msg instanceof FindHeartbeatEvent) {
+        if (msg instanceof FindHeartbeatEvent) {
             String nodeId = ((FindHeartbeatEvent) msg).getNodeId();
             workerId.set(nodeId);
             workerManager.addWorker(nodeId, ctx.channel());
+        } else if (msg instanceof LostHeartbeatEvent) {
+        	workerManager.removeWorker(workerId.get());
+            ctx.channel().close();
+            failOverManager.failOver(workerId.get());
         }
     }
 }

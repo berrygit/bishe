@@ -21,32 +21,32 @@ function loadPageService() {
             title: '成功率'
         },{
             field: 'average',
-            title: '平均耗时（毫秒）'
+            title: '平均耗时（秒）'
         },{
             field: 'max',
-            title: '最长耗时（毫秒）'
+            title: '最长耗时（秒）'
         },{
             field: 'min',
-            title: '最短耗时（毫秒）'
+            title: '最短耗时（秒）'
         },{
             field: 'operation',
             title: '操作'
         }],
         data: [{
         	name: 'Request_A',total:'2344',success:'2344',fail:'0',timeout:'0',rate:'100.00%' 
-        		,average:"1216", max:"2132", min:"1003",operation:'<a>查看时间趋势</a>'
+        		,average:"12", max:"21", min:"10",operation:'<a>查看时间趋势</a>'
         },{
         	name: 'Request_B',total:'234',success:'234',fail:'0',timeout:'0',rate:'100.00%' 
-        		,average:"1532", max:"2043", min:"983",operation:'<a>查看时间趋势</a>'
+        		,average:"153", max:"204", min:"98",operation:'<a>查看时间趋势</a>'
         },{
         	name: 'Request_C',total:'1235',success:'1235',fail:'0',timeout:'0',rate:'100.00%' 
-        		,average:"1598", max:"2231", min:"1234",operation:'<a>查看时间趋势</a>'
+        		,average:"159", max:"223", min:"123",operation:'<a>查看时间趋势</a>'
         },{
         	name: 'Request_D',total:'345',success:'345',fail:'0',timeout:'0',rate:'100.00%' 
-        		,average:"1345", max:"2312", min:"1234",operation:'<a>查看时间趋势</a>'
+        		,average:"2", max:"5", min:"1",operation:'<a>查看时间趋势</a>'
         },{
         	name: 'Request_E',total:'876',success:'876',fail:'0',timeout:'0',rate:'100.00%' 
-        		,average:"1453", max:"2341", min:"1222",operation:'<a>查看时间趋势</a>'
+        		,average:"1", max:"2", min:"1",operation:'<a>查看时间趋势</a>'
         }],
         striped: true,
     });

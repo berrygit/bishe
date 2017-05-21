@@ -41,7 +41,7 @@ public class DefaultFailOverManager implements FailOverManager {
 				for (WorkflowInstanceBean instance : instances) {
 
 					instance.setNode("");
-					instance.setStatus(WorkflowInstanceState.INIT.name());
+					instance.setStatus(WorkflowInstanceState.SCHEDULABLE.name());
 
 					try {
 						workflowEngine.rollback(instance);
